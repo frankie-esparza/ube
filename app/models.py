@@ -6,23 +6,23 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
-# class Employee(db.Model, UserMixin):
-#     __tablename__ = 'employees'
+class Employee(db.Model, UserMixin):
+    __tablename__ = 'employees'
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(100), )
-#     employee_something = db.Column(db.Integer, )
-#     hashed_password = db.String(255), )
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    employee_manager = db.Column(db.Integer, nullable=False, unique=True)
+    hashed_password = db.Column(db.String(255), nullable=False)
 
-#     @property
-#     def password(self):
-#         return self.hashed_password
+    @property
+    def password(self):
+        return self.hashed_password
 
-#     @password.setter
-#     def password(self, password):
-#         self.hashed_password = generate_password_hash(password)
+    @password.setter
+    def password(self, password):
+        self.hashed_password = generate_password_hash(password)
 
-#     def check_password(self, password):
-#         return check_password_hash(self.password, password)
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
