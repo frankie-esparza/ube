@@ -2,8 +2,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from app import app, db
-# from app.models import Employee, Menu, MenuItem, MenuItemType, Table
-from app.models import Employee
+from app.models import Employee, Menu, Item, ItemType, Table, Order, OrderedItem
 
 with app.app_context():
     db.drop_all()
@@ -17,31 +16,37 @@ with app.app_context():
     # ------------
     # Menus
     # ------------
-    # dinner = Menu(name="Dinner")
+    dinner = Menu(name="Dinner")
 
-    # beverages = MenuItemType(name="Beverages")
-    # entrees = MenuItemType(name="Entrees")
-    # sides = MenuItemType(name="Sides")
-    # menuItemTypes = [beverages, entrees, sides]
+    beverages = ItemType(name="Beverages")
+    entrees = ItemType(name="Entrees")
+    sides = ItemType(name="Sides")
 
-    # fries = MenuItem(name="French fries", price=3.50, type=sides, menu=dinner)
-    # drp = MenuItem(name="Dr. Pepper", price=1.0, type=beverages, menu=dinner)
-    # jambalaya = MenuItem(name="Jambalaya", price=21.98, type=entrees, menu=dinner)
-    # menuItems = [fries, drp, jambalaya]
+    fries = Item(name="French fries", price=3.50, type=sides, menu=dinner)
+    drp = Item(name="Dr. Pepper", price=1.0, type=beverages, menu=dinner)
+    jambalaya = Item(name="Jambalaya", price=21.98, type=entrees, menu=dinner)
+
+    itemTypes = [beverages, entrees, sides]
+    items = [fries, drp, jambalaya]
 
     # ------------
     # Tables
     # ------------
-    # tables = []
-    # for n in range(1, 11):
-    #     c = 2 if n < 5 else 5
-    #     tables.append(Table(number=n, capacity=c))
+    tables = []
+    for i in range(1,11):
+        tables.append(Table(number=i, capacity=(2 if i < 5 else 5)))
 
-    # data = [employee, dinner, *menuItems, *menuItemTypes, *tables]
-    data = [employee]
     # ------------
     # Orders
     # ------------
+    order = Order(employee_id=1, table_id=3, paid=False)
+    jambalaya_order = OrderedItem(item=jambalaya, order_id=1)
+    fries_order = OrderedItem(item=fries, order_id=1)
+
+    # ------------
+    # ALL DATA
+    # ------------
+    data = [employee, dinner, *items, *itemTypes, *tables, order]
 
     for i in data:
         db.session.add(i)
