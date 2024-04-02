@@ -7,6 +7,8 @@ bp = Blueprint("session", __name__, url_prefix="/session")
 
 @bp.route("/", methods=["GET", "POST"])
 def login():
+    print('AUTHENTICATED?', current_user.is_authenticated)
+
     if current_user.is_authenticated:
         return redirect(url_for("orders.index"))
     
@@ -23,10 +25,13 @@ def login():
     
     return render_template("login.html", form=form)
 
-@bp.route("/", methods=["POST"])
+@bp.route("/logout", methods=["POST"])
 def logout():
     logout_user()
-    return redirect(url_for(".login"))
+
+    print('AFTER LOGOUT', current_user.is_authenticated)
+
+    return redirect(url_for("orders.index"))
 
 
 
