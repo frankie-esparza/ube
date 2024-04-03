@@ -1,0 +1,15 @@
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <table>
+        <h2>Add Item to Order</h2>
+        <tbody>
+            {% for field in form if field.widget.input_type != 'hidden' %}
+            <tr>
+                <td class="form-field-label">{{ field.label }}</td>
+                <td class = "form-field">{{ field }}</td>
+                {% include "errors.html" %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
