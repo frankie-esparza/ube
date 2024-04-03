@@ -1,0 +1,6 @@
+{% if not current_user.is_anonymous %}
+<nav>
+    <a href="{{ url_for('orders.index')}}">Home</a>
+    {% include "navs/logout-button.html" %}
+</nav>
+{% endif %}
