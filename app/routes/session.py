@@ -5,14 +5,15 @@ from flask_login import current_user, login_user, logout_user
 
 bp = Blueprint("session", __name__, url_prefix="/session")
 
+
 @bp.route("/", methods=["GET", "POST"])
 def login():
-    print('AUTHENTICATED?', current_user.is_authenticated)
-
     if current_user.is_authenticated:
         return redirect(url_for("orders.index"))
     
     form = LoginForm()
+
+
     if form.validate_on_submit():
         empl_number = form.employee_number.data
         employee = Employee.query.filter(Employee.employee_number == empl_number).first()
@@ -25,12 +26,10 @@ def login():
     
     return render_template("login.html", form=form)
 
+
 @bp.route("/logout", methods=["POST"])
 def logout():
     logout_user()
-
-    print('AFTER LOGOUT', current_user.is_authenticated)
-
     return redirect(url_for("orders.index"))
 
 

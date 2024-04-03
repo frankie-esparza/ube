@@ -60,7 +60,6 @@ class Table(db.Model):
     number = db.Column(db.Integer, nullable=False, unique=True)
     capacity = db.Column(db.Integer, nullable=False)
 
-
 # ------------
 # Orders
 # ------------
@@ -74,12 +73,11 @@ ordered_items_per_order = db.Table(
 class OrderedItem(db.Model):
     __tablename__ = "ordered_items"
     id = db.Column(db.Integer, primary_key=True)
-
     order_id = db.Column(db.Integer, ForeignKey("orders.id"), nullable=False)
     item_id = db.Column(db.Integer, ForeignKey("items.id"), nullable=False)
 
-    item = db.relationship("Item", cascade="all, delete")
-    orders = db.relationship("Order")
+    item = db.relationship("Item")
+    orders = db.relationship("Order", secondary=ordered_items_per_order, back_populates="ordered_items", cascade="all, delete")
 
 
 class Order(db.Model):

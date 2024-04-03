@@ -1,0 +1,15 @@
+<h3>Order # {{ order.id }}</h3>
+<ul>
+    <li>Table: {{ order.table_id }}</li>
+    <li>Paid: {{'Yes' if order.paid else 'No'}}</li>
+    <li>
+        Ordered Items:
+        <ul>
+            {% for ordered_item in order.ordered_items%}
+            <li>{{ ordered_item.item.name }}</li>
+            {% endfor %}
+        </ul>
+
+    </li>
+   
+</ul>
