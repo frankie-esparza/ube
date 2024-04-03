@@ -30,6 +30,12 @@ def logout():
     logout_user()
     return redirect(url_for("orders.index"))
 
+@bp.route("/create-order", methods=["GET"])
+def createOrder():
+    return "<h1>Create Order</h1>"
 
+@bp.route("/update-order", methods=["GET"])
+def updateOrder():
+    return "<h1>Update Order</h1>"
 
 
