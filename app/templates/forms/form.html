@@ -1,18 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
 {% include "navs/return-home.html" %}
-<form method="post" action="{{ url_for(path) }}" >
-    {{ form.hidden_tag() }}
-    <table>
-        <h2>{{ title }}</h2>
-        <tbody>
-            {% for field in form if field.widget.input_type != 'hidden' %}
-            <tr>
-                <td class="form-field-label">{{ field.label }}</td>
-                <td class = "form-field">{{ field }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</form>
+<div class="centered-content-container">
+    <div class="centered-content">
+        <form method="post" action="{{ url_for(path) }}" >
+            {{ form.hidden_tag() }}
+            <table>
+                <h2>{{ title }}</h2>
+                <tbody>
+                    {% for field in form if field.widget.input_type != 'hidden' %}
+                    <tr>
+                        <td class="form-field-label">{{ field.label }}</td>
+                        <td class = "form-field">{{ field }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
 {% endblock %}

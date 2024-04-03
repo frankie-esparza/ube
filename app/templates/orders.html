@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 {% include "navs/update-or-create-order.html" %}
-<h1>Welcome {{ current_user.name }}! </h1>
-<h2>My Orders:</h2>
-<ul>
-    {% for order in orders %}
-    <li>{% include "order.html"%}</li>
-    {% endfor %}
-</ul>
+<div class="centered-content-container">
+    <div class="centered-content">
+        <h1>Welcome {{ current_user.name }}! </h1>
+        <h2>My Orders:</h2>
+        <ul>
+            {% for order in orders %}
+            <li>{% include "order.html"%}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}
