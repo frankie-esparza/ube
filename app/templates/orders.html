@@ -1,9 +1,15 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1>Order Up!</h1>
 <div>
-    {% include "add_item_form.html" %}
+    <form method="get" action="{{ url_for('session.createOrder') }}">
+        <button>Create Order</button>
+    </form>
+    <form method="get" action="{{ url_for('session.updateOrder') }}">
+        <button>Update Order</button>
+    </form>
+    <form method="post" action="{{ url_for('session.logout') }}">
+        <button>Logout</button>
+    </form>
 </div>
 <div>
     <h2>My Orders:</h2>
