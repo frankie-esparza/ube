@@ -5,11 +5,9 @@
     {% else %}
       <title>Welcome to Order Up!</title>
     {% endif %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
   </head>
   <body>
-    {% if not current_user.is_anonymous %}
-    <h1>Hi {{  current_user.name}}!</h1>
-    {% endif %}
     {% block content %}
     {% endblock %}
   </body>

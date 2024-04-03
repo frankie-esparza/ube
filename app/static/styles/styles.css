@@ -1,0 +1,10 @@
+nav {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    justify-content: end;
+}
+
+a, button {
+    padding-inline: 5px;
+}

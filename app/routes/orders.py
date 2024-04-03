@@ -8,7 +8,18 @@ bp = Blueprint("orders", __name__, url_prefix="")
 @bp.route("/")
 @login_required
 def index():
-    items = Item.query.all()
     orders = Order.query.filter_by(employee_id = current_user.id).all()
-    form=AddItemForm()
-    return render_template("orders.html", orders=orders, items=items, form=form)
+    return render_template("orders.html", orders=orders)
+
+
+@bp.route("/update-order", methods=["GET"])
+def updateOrder():
+    form = AddItemForm()
+    path='orders.updateOrder'
+    title = 'Update Order'
+    return render_template("forms/form.html", form=form, title=title, path=path)
+
+
+@bp.route("/create-order", methods=["GET"])
+def createOrder():
+    return "<h1>Create Order</h1>"

@@ -22,20 +22,10 @@ def login():
         login_user(employee)
         return redirect(url_for("orders.index"))
     
-    return render_template("login.html", form=form)
-
+    return render_template("forms/form.html", form=form, path='session.login')
 
 @bp.route("/logout", methods=["POST"])
 def logout():
     logout_user()
     return redirect(url_for("orders.index"))
-
-@bp.route("/create-order", methods=["GET"])
-def createOrder():
-    return "<h1>Create Order</h1>"
-
-@bp.route("/update-order", methods=["GET"])
-def updateOrder():
-    return "<h1>Update Order</h1>"
-
 

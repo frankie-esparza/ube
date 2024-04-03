@@ -1,23 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<div>
-    <form method="get" action="{{ url_for('session.createOrder') }}">
-        <button>Create Order</button>
-    </form>
-    <form method="get" action="{{ url_for('session.updateOrder') }}">
-        <button>Update Order</button>
-    </form>
-    <form method="post" action="{{ url_for('session.logout') }}">
-        <button>Logout</button>
-    </form>
-</div>
-<div>
-    <h2>My Orders:</h2>
-    <ul>
-        {% for order in orders %}
-        {% include "order.html"%}
-        {% endfor %}
-    </ul>
-</div>
-
+{% include "navs/nav-update-or-create-order.html" %}
+<h1>Welcome {{ current_user.name }}! </h1>
+<h2>My Orders:</h2>
+<ul>
+    {% for order in orders %}
+    <li>{% include "order.html"%}</li>
+    {% endfor %}
+</ul>
 {% endblock %}
