@@ -1,10 +1,9 @@
 from flask import Blueprint, redirect, url_for, render_template
-from app.forms import LoginForm
+from app.forms.Login import LoginForm
 from app.models import Employee
 from flask_login import current_user, login_user, logout_user
 
 bp = Blueprint("session", __name__, url_prefix="/session")
-
 
 @bp.route("/", methods=["GET", "POST"])
 def login():
@@ -12,7 +11,6 @@ def login():
         return redirect(url_for("orders.index"))
     
     form = LoginForm()
-
 
     if form.validate_on_submit():
         empl_number = form.employee_number.data
