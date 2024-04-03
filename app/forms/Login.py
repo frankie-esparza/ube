@@ -1,11 +1,10 @@
 from flask_wtf import FlaskForm;
-from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
-from app.models import Order, Item
 
-validators = [DataRequired()]
+default = [DataRequired()]
 
 class LoginForm(FlaskForm):
-    employee_number = StringField('Employee number', validators)
-    password = PasswordField('Password', validators)
-    submit = SubmitField('Login', validators)
+    employee_number = StringField('Employee number', validators=default)
+    password = PasswordField('Password', validators=default)
+    submit = SubmitField('Login', validators=default)

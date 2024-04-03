@@ -1,10 +1,11 @@
 nav {
     display: flex;
     flex-direction: row;
-    margin: 10px;
+    margin: 15px;
     justify-content: end;
 }
 
 a, button {
-    padding-inline: 5px;
+    padding-inline: px;
+    margin-inline: 5px;
 }

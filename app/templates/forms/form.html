@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "navs/return-home.html" %}
 <form method="post" action="{{ url_for(path) }}" >
     {{ form.hidden_tag() }}
     <table>
@@ -12,3 +15,4 @@
         </tbody>
     </table>
 </form>
+{% endblock %}
