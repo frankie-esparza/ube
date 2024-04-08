@@ -31,18 +31,13 @@ with app.app_context():
     for i in range(1,11):
         tables.append(Table(number=i, capacity=(2 if i < 5 else 5)))
 
-    # OrderedItems
-    jambalaya_order = OrderedItem(item=jambalaya, order_id=1)
-    fries_order = OrderedItem(item=fries, order_id=1)
-    ordered_items = [jambalaya_order, fries_order]
-
     # Orders
-    order = Order(employee_id=1, table_id=3, paid=False, ordered_items = [*ordered_items])
+    order = Order(employee_id=1, table_id=3, paid=False, ordered_items = [])
 
     # ---------------
     # Seed the Data
     # ---------------
-    data = [employee, dinner, *items, *item_types, *tables, *ordered_items, order]
+    data = [employee, dinner, *items, *item_types, *tables, order]
 
     for d in data:
         db.session.add(d)

@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
-from app.models import db, Order, Item, Employee, Table
-from app.forms.UpdateOrder import UpdateOrderForm
+from app.models import db, Order, OrderedItem, Item, Employee, Table
+from app.forms.AddOrRemoveItem import AddOrRemoveItemForm
 from app.forms.CreateOrder import CreateOrderForm
 
 bp = Blueprint("orders", __name__, url_prefix="")
-models = { "employee": Employee, "item": Item, "order": Order, "table": Table }
+models = { "employee": Employee, "item": Item, "order": Order, "ordered-item": OrderedItem, "table": Table }
 
 # -----------
 # ROUTES
@@ -13,18 +13,8 @@ models = { "employee": Employee, "item": Item, "order": Order, "table": Table }
 @login_required
 @bp.route("/")
 def index():
-    if current_user.is_authenticated:
-        return render_template("orders.html", orders=getEmployeesOrders())
+    if current_user.is_authenticated: return render_template("orders.html", orders=getEmployeesOrders())
     return redirect(url_for("session.login"))
-
-
-@login_required
-@bp.route("/update-order", methods=["GET"])
-def updateOrder():
-    form = UpdateOrderForm()
-    getFormChoices(form)
-
-    return render_template("forms/form.html", form=form, path='orders.updateOrder', title='Update Order',)
 
 
 @login_required
@@ -32,23 +22,56 @@ def updateOrder():
 def createOrder():
     form = CreateOrderForm()
     getFormChoices(form)
-
-    if form.validate_on_submit():
-        handleCreateOrderFormSubmit(form)
-
+    if form.validate_on_submit(): handleCreateOrderFormSubmit(form)
     return render_template("forms/form.html", form=form, path='orders.createOrder', title='Create Order',)
 
+@login_required
+@bp.route("/add-to-order", methods=["GET", "POST"])
+def addToOrder():
+    form = AddOrRemoveItemForm()
+    getFormChoices(form)
+    if form.validate_on_submit(): handleAddToOrderFormSubmit(form)
+    return render_template("forms/form.html", form=form, path='orders.addToOrder', title='Add Item to Order',)
 
-# -----------
-# HELPERS
-# -----------
+
+@login_required
+@bp.route("/remove-from-order", methods=["GET", "POST"])
+def removeFromOrder():
+    form = AddOrRemoveItemForm()
+    getFormChoices(form)
+    if form.validate_on_submit(): handleRemoveFromOrderFormSubmit(form)
+    return render_template("forms/form.html", form=form, path='orders.removeFromOrder', title='Remove Item from Order',)
+
+
+# ---------------
+# EVENT HANDLERS
+# ---------------
 def handleCreateOrderFormSubmit(form):
     order = Order(employee_id = form.employee.data, table_id= form.table.data, paid = False, ordered_items = [])
     db.session.add(order)
     db.session.commit()
 
+def handleAddToOrderFormSubmit(form):
+    # find order & item to be added
+    order = db.session.execute(db.select(Order).where(Order.id == form.order.data)).scalar()
+    item = db.session.execute(db.select(Item).where(Item.id == form.item.data)).scalar()
+
+    # create new orderedItem
+    orderedItem = OrderedItem(order_id= form.order.data, item = item )
+    order.ordered_items.append(orderedItem)
+    db.session.commit()
+
+def handleRemoveFromOrderFormSubmit(form):
+    order = db.session.execute(db.select(Order).where(Order.id == form.order.data)).scalar()
+    idToRemove = form.item.data
+    order.ordered_items = list(filter(lambda x: int(x.item_id) != int(idToRemove), order.ordered_items ))
+    db.session.commit()
+
+# -----------
+# HELPERS
+# -----------
 def getAll(model):
-    return db.session.execute(db.select(models[model]).order_by(models[model].id)).scalars()
+    return db.session.execute(db.select(models[model])).scalars().all()
 
 def getEmployeesOrders():
     return db.session.execute(db.select(Order).filter_by(employee_id = current_user.id)).scalars()
@@ -58,6 +81,4 @@ def getFormChoices(form):
         if form[field].type == 'SelectField':
             field = form[field].name
             options = getAll(field)
-
-            for i in options:
-                form[field].choices = [(i.id, f"{i.name if hasattr(i, 'name') else field.capitalize() + ' ' + str(i.id) }")]
+            form[field].choices = [(i.id, f"{i.name if hasattr(i, 'name') else str(i.id) }") for i in options]
