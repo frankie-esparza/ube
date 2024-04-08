@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 default = [DataRequired()]
 
-class UpdateOrderForm(FlaskForm):
+class AddOrRemoveItemForm(FlaskForm):
     order = SelectField('Order', validators=default)
     item = SelectField('Item', validators=default)
     submit = SubmitField('Submit')
