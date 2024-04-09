@@ -10,13 +10,22 @@
                 <tbody>
                     {% for field in form if field.widget.input_type != 'hidden' %}
                     <tr>
+                        {% if field.type != 'SubmitField' %}
                         <td class="form-field-label">{{ field.label }}</td>
+                        {% endif %}
                         <td class = "form-field">{{ field }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </form>
+        {% if path == 'session.login' %}
+        <span>Don't have an account yet?</span>
+        <a href="{{ url_for('session.signup')}}">Sign Up</a>
+        {% elif path == 'session.signup' %}
+        <span>Already have an account?</span>
+        <a href="{{ url_for('session.login')}}">Login</a>
+        {% endif %}
     </div>
 </div>
 

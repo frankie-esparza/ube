@@ -22,7 +22,8 @@ def index():
 def createOrder():
     form = CreateOrderForm()
     getFormChoices(form)
-    if form.validate_on_submit(): handleCreateOrderFormSubmit(form)
+    if form.validate_on_submit(): 
+        handleCreateOrder(form)
     return render_template("forms/form.html", form=form, path='orders.createOrder', title='Create Order',)
 
 @login_required
@@ -30,7 +31,8 @@ def createOrder():
 def addToOrder():
     form = AddOrRemoveItemForm()
     getFormChoices(form)
-    if form.validate_on_submit(): handleAddToOrderFormSubmit(form)
+    if form.validate_on_submit(): 
+        handleAddItem(form)
     return render_template("forms/form.html", form=form, path='orders.addToOrder', title='Add Item to Order',)
 
 
@@ -39,19 +41,20 @@ def addToOrder():
 def removeFromOrder():
     form = AddOrRemoveItemForm()
     getFormChoices(form)
-    if form.validate_on_submit(): handleRemoveFromOrderFormSubmit(form)
+    if form.validate_on_submit(): 
+        handleRemoveItem(form)
     return render_template("forms/form.html", form=form, path='orders.removeFromOrder', title='Remove Item from Order',)
 
 
 # ---------------
 # EVENT HANDLERS
 # ---------------
-def handleCreateOrderFormSubmit(form):
+def handleCreateOrder(form):
     order = Order(employee_id = form.employee.data, table_id= form.table.data, paid = False, ordered_items = [])
     db.session.add(order)
     db.session.commit()
 
-def handleAddToOrderFormSubmit(form):
+def handleAddItem(form):
     # find order & item to be added
     order = db.session.execute(db.select(Order).where(Order.id == form.order.data)).scalar()
     item = db.session.execute(db.select(Item).where(Item.id == form.item.data)).scalar()
@@ -61,11 +64,12 @@ def handleAddToOrderFormSubmit(form):
     order.ordered_items.append(orderedItem)
     db.session.commit()
 
-def handleRemoveFromOrderFormSubmit(form):
+def handleRemoveItem(form):
     order = db.session.execute(db.select(Order).where(Order.id == form.order.data)).scalar()
     idToRemove = form.item.data
     order.ordered_items = list(filter(lambda x: int(x.item_id) != int(idToRemove), order.ordered_items ))
     db.session.commit()
+
 
 # -----------
 # HELPERS
