@@ -3,7 +3,7 @@
 {% include "navs/return-home.html" %}
 <div class="centered-content-container">
     <div class="centered-content">
-        <form method="post" action="{{ url_for(path) }}" >
+        <form method="post" action={{path}} >
             {{ form.hidden_tag() }}
             <table>
                 <h2>{{ title }}</h2>

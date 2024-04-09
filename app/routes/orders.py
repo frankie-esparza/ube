@@ -14,7 +14,7 @@ models = { "employee": Employee, "item": Item, "order": Order, "ordered-item": O
 @bp.route("/")
 def index():
     if current_user.is_authenticated: 
-        return render_template("orders.html", orders=getEmployeesOrders())
+        return render_template("orders.html", orders=getEmployeesOpenOrders())
     return redirect(url_for("session.login"))
 
 
@@ -28,13 +28,20 @@ def createOrder():
     return render_template("forms/form.html", form=form, path='orders.createOrder', title='Create Order',)
 
 @login_required
-@bp.route("/add-to-order", methods=["GET", "POST"])
-def addToOrder():
+@bp.route("/close-order", methods=["GET", "POST"])
+def closeOrder():
+   pass
+
+
+@login_required
+@bp.route("/add-to-order/<order_id>", methods=["GET", "POST"])
+def addToOrder(order_id):
     form = AddOrRemoveItemForm()
     getFormChoices(form)
     if form.validate_on_submit(): 
-        handleAddItem(form)
-    return render_template("forms/form.html", form=form, path='orders.addToOrder', title='Add Item to Order',)
+        handleAddItem(form, order_id)
+        return redirect(url_for("orders.index"))
+    return render_template("forms/form.html", form=form, path=f'/add-to-order/{order_id}', title='Add Item to Order',)
 
 
 @login_required
@@ -55,13 +62,13 @@ def handleCreateOrder(form):
     db.session.add(order)
     db.session.commit()
 
-def handleAddItem(form):
+def handleAddItem(form, order_id):
     # find order & item to be added
-    order = db.session.execute(db.select(Order).where(Order.id == form.order.data)).scalar()
+    order = db.session.execute(db.select(Order).where(Order.id == order_id)).scalar()
     item = db.session.execute(db.select(Item).where(Item.id == form.item.data)).scalar()
 
     # create new orderedItem
-    orderedItem = OrderedItem(order_id= form.order.data, item = item)
+    orderedItem = OrderedItem(order_id= order_id, item = item)
     order.ordered_items.append(orderedItem)
     db.session.commit()
 
@@ -78,8 +85,11 @@ def handleRemoveItem(form):
 def getAll(model):
     return db.session.execute(db.select(models[model])).scalars().all()
 
-def getEmployeesOrders():
-    return db.session.execute(db.select(Order).filter_by(employee_id = current_user.id)).scalars()
+def getEmployeesOpenOrders():
+    return db.session.execute(
+        db.select(Order)
+        .where(Order.employee_id == current_user.id and Order.paid == False)
+    ).scalars()
 
 def getOpenTables():
     paidTables = db.session.execute(
