@@ -73,6 +73,7 @@ ordered_items_per_order = db.Table(
 class OrderedItem(db.Model):
     __tablename__ = "ordered_items"
     id = db.Column(db.Integer, primary_key=True)
+
     order_id = db.Column(db.Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
     item_id = db.Column(db.Integer, ForeignKey("items.id", ondelete="CASCADE"), nullable=False)
 
@@ -83,18 +84,8 @@ class OrderedItem(db.Model):
 class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key=True)
+    paid = db.Column(db.Boolean, nullable=False)
+
     employee_id = db.Column(db.Integer, ForeignKey("employees.id", ondelete="CASCADE"), nullable=False)
     table_id = db.Column(db.Integer, ForeignKey("tables.id", ondelete="CASCADE"), nullable=False)
-    paid = db.Column(db.Boolean, nullable=False)
     ordered_items = db.relationship("OrderedItem", secondary=ordered_items_per_order, back_populates="orders", cascade="all, delete")
-
-orders_per_employee = db.Table(
-    "orders_per_employee",
-    db.Model.metadata,
-    db.Column("order_id", db.Integer, db.ForeignKey("orders.id"), primary_key=True),
-    db.Column("employee_id", db.Integer, db.ForeignKey("employees.id"), primary_key=True),
-)
-
-# Add Employee to Orders Relationship
-Employee.orders = db.relationship("Order", primaryjoin=Order.employee_id==Employee.id)
-    
