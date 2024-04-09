@@ -10,6 +10,7 @@ bp = Blueprint("session", __name__, url_prefix="/session")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("orders.index"))
+    
     form = LoginForm()
     if form.validate_on_submit():
         handleLogin(form)

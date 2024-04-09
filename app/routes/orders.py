@@ -26,12 +26,13 @@ def createOrder():
     if form.validate_on_submit(): 
         handleCreateOrder(form)
         return redirect(url_for("orders.index"))
-    return render_template("forms/form.html", form=form, path='orders.createOrder', title='Create Order',)
+    return render_template("forms/form.html", form=form, path=url_for('orders.createOrder'), title='Create Order',)
 
 @login_required
-@bp.route("/close-order", methods=["GET", "POST"])
-def closeOrder():
-   pass
+@bp.route("/close-order/<order_id>", methods=["GET", "POST"])
+def closeOrder(order_id):
+   handleCloseOrder(order_id)
+   return redirect(url_for("orders.index"))
 
 
 @login_required
@@ -64,6 +65,12 @@ def handleCreateOrder(form):
     db.session.add(order)
     db.session.commit()
 
+def handleCloseOrder(order_id):
+    print('ORDER ID', order_id)
+    order = db.session.execute(db.select(Order).where(Order.id == order_id)).scalar()
+    order.paid = True
+    db.session.commit()
+
 def handleAddItem(form, order_id):
     # find order & item to be added
     order = db.session.execute(db.select(Order).where(Order.id == order_id)).scalar()
@@ -74,8 +81,8 @@ def handleAddItem(form, order_id):
     order.ordered_items.append(orderedItem)
     db.session.commit()
 
-def handleRemoveItem(form):
-    order = db.session.execute(db.select(Order).where(Order.id == form.order.data)).scalar()
+def handleRemoveItem(form, order_id):
+    order = db.session.execute(db.select(Order).where(Order.id == order_id)).scalar()
     idToRemove = form.item.data
     order.ordered_items = list(filter(lambda x: int(x.item_id) != int(idToRemove), order.ordered_items ))
     db.session.commit()
@@ -91,29 +98,30 @@ def getEmployeesOpenOrders():
     return db.session.execute(
         db.select(Order)
         .where(Order.employee_id == current_user.id and Order.paid == False)
+        .order_by(Order.paid)
     ).scalars()
 
 def getOpenTables():
-    paidTables = db.session.execute(
-        db.select(Table.id)
+    allTables = getAll("table")
+
+    tablesWithUnpaidOrders = db.session.execute(
+        db.select(Table)
         .join_from(Table, Order)
-        .where(Order.paid == True)
+        .where(Order.paid == False)
     ).scalars().all()
 
-    assignedTables = db.session.execute(
-        db.select(Table.id)
-        .join_from(Table, Order)
-    ).scalars().all()
-
-    tablesThatHaveNeverBeenAssigned = filter(lambda x: x.id not in assignedTables, getAll("table"))
-    return [*paidTables, *tablesThatHaveNeverBeenAssigned]
+    openTables = set(filter(lambda x: x not in tablesWithUnpaidOrders, allTables))
+    return sorted(openTables, key=lambda x: x.id)
 
 
 def getFormChoices(form):
     for field in form._fields.keys():
+        print('FIELD', field)
         field = form[field].name
         if form[field].type == 'SelectField':
             options = []
-            if (field == 'table'): options = getOpenTables()
+            if (field == 'table'): 
+                options = getOpenTables()
+                print('TABLES', options)
             else: options = getAll(field)
             form[field].choices = [(i.id, f"{i.name if hasattr(i, 'name') else str(i.id) }") for i in options]

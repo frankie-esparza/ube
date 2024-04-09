@@ -3,7 +3,7 @@
 {% include "navs/return-home.html" %}
 <div class="centered-content-container">
     <div class="centered-content">
-        <form method="post" action={{path}} >
+        <form method="post" action={{ path }}>
             {{ form.hidden_tag() }}
             <table>
                 <h2>{{ title }}</h2>
@@ -19,12 +19,13 @@
                 </tbody>
             </table>
         </form>
-        {% if path == 'session.login' %}
-        <span>Don't have an account yet?</span>
-        <a href="{{ url_for('session.signup')}}">Sign Up</a>
-        {% elif path == 'session.signup' %}
-        <span>Already have an account?</span>
-        <a href="{{ url_for('session.login')}}">Login</a>
+        {% if path == "/session/" %}
+            <span>Don't have an account yet?</span>
+            <a href="{{ url_for('session.signup')}}">Sign Up</a>
+
+        {% elif path == "/session/signup" %}
+            <span>Already have an account?</span>
+            <a href="{{ url_for('session.login')}}">Login</a>
         {% endif %}
     </div>
 </div>
