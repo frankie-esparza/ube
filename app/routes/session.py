@@ -13,7 +13,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         handleLogin(form)
-    return render_template("forms/form.html", form=form, path='session.login', title="Login to view your Orders")
+        return redirect(url_for("session.login"))
+    return render_template("forms/form.html", form=form, path=url_for('session.login'), title="Login to view your Orders")
 
 
 @bp.route("/logout", methods=["POST"])
@@ -26,7 +27,7 @@ def signup():
     form = SignupForm()
     if form.validate_on_submit():
         handleSignUp(form)
-    return render_template("forms/form.html", form=form, path='session.signup', title="Create an Employee Account")
+    return render_template("forms/form.html", form=form, path=url_for('session.signup'), title="Create an Employee Account")
 
 # -----------
 # HELPERS

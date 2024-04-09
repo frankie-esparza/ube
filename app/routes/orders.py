@@ -25,6 +25,7 @@ def createOrder():
     getFormChoices(form)
     if form.validate_on_submit(): 
         handleCreateOrder(form)
+        return redirect(url_for("orders.index"))
     return render_template("forms/form.html", form=form, path='orders.createOrder', title='Create Order',)
 
 @login_required
@@ -45,13 +46,14 @@ def addToOrder(order_id):
 
 
 @login_required
-@bp.route("/remove-from-order", methods=["GET", "POST"])
-def removeFromOrder():
+@bp.route("/remove-from-order/<order_id>", methods=["GET", "POST"])
+def removeFromOrder(order_id):
     form = AddOrRemoveItemForm()
     getFormChoices(form)
     if form.validate_on_submit(): 
         handleRemoveItem(form)
-    return render_template("forms/form.html", form=form, path='orders.removeFromOrder', title='Remove Item from Order',)
+        return redirect(url_for("orders.index"))
+    return render_template("forms/form.html", form=form, path=f'/remove-from-order/{order_id}', title='Remove Item from Order',)
 
 
 # ---------------
