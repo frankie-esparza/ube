@@ -10,7 +10,7 @@
                 <tbody>
                     {% for field in form if field.widget.input_type != 'hidden' %}
                     <tr>
-                        {% if field.type != 'SubmitField' %}
+                        {% if (field.type != 'SubmitField' and field.type != 'RadioField') %}
                         <td class="form-field-label">{{ field.label }}</td>
                         {% endif %}
                         <td class = "form-field">{{ field }}</td>

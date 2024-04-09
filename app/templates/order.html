@@ -13,15 +13,14 @@
         <li>Table: {{ order.table_id }}</li>
         <li>Paid: {{'Yes' if order.paid else 'No'}}</li>
         <li>
-            Ordered Items:
-            <ul>
+            <div class="ordered-items-container">
                 {% for ordered_item in order.ordered_items%}
-                <li>{{ ordered_item.item.name }}</li>
+                <div class = "ordered-item">
+                    <p>{{ordered_item.item.name}}</p>
+                    <img src="/static/images/{{ordered_item.item.image_filename}}.png" width="150">
+                </div>
                 {% endfor %}
-            </ul>
-    
-        </li>
-       
+            </div>
+            </li>
     </ul>
-    
 </div>

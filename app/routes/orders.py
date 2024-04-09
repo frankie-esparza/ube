@@ -52,7 +52,7 @@ def removeFromOrder(order_id):
     form = AddOrRemoveItemForm()
     getFormChoices(form)
     if form.validate_on_submit(): 
-        handleRemoveItem(form)
+        handleRemoveItem(form, order_id)
         return redirect(url_for("orders.index"))
     return render_template("forms/form.html", form=form, path=f'/remove-from-order/{order_id}', title='Remove Item from Order',)
 
@@ -118,7 +118,8 @@ def getFormChoices(form):
     for field in form._fields.keys():
         print('FIELD', field)
         field = form[field].name
-        if form[field].type == 'SelectField':
+        type = form[field].type
+        if (type == 'SelectField' or type == 'RadioField'):
             options = []
             if (field == 'table'): 
                 options = getOpenTables()

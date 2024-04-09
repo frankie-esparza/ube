@@ -9,10 +9,10 @@ with app.app_context():
     db.create_all()
 
     # Employees
-    employee = Employee(name="Margot", employee_number=1234, password="password")
+    employee = Employee(name="Emerenciana", employee_number=1234, password="ube")
 
     # Menus
-    dinner = Menu(name="Dinner")
+    bfast = Menu(name="Breakfast")
 
     # ItemTypes
     beverages = ItemType(name="Beverages")
@@ -21,10 +21,18 @@ with app.app_context():
     item_types = [beverages, entrees, sides]
 
     # Items
-    fries = Item(name="French fries", price=3.50, type=sides, menu=dinner)
-    drp = Item(name="Dr. Pepper", price=1.0, type=beverages, menu=dinner)
-    jambalaya = Item(name="Jambalaya", price=21.98, type=entrees, menu=dinner)
-    items = [fries, drp, jambalaya]
+    bars = Item(name="Ube Bars", price=9.00, type=entrees, menu=bfast, image_filename = "bars")
+    canoli = Item(name="Ube Canoli", price=7.00, type=entrees, menu=bfast, image_filename = "canoli")
+    cheescake = Item(name="Ube Cheesecake", price=15.00, type=entrees, menu=bfast, image_filename = "cheescake")
+    cookies = Item(name="Ube Cookies", price=9.00, type=entrees, menu=bfast, image_filename = "cookies")
+    crinkle = Item(name="Ube Crinkle Cookie", price=9.00, type=entrees, menu=bfast, image_filename = "crinkle")
+    flan = Item(name="Ube Flan", price=15.00, type=entrees, menu=bfast, image_filename = "flan")
+    monut = Item(name="Ube Monut", price=9.00, type=entrees, menu=bfast, image_filename = "monut")
+    poptart = Item(name="Ube Pop Tart", price=9.00, type=entrees, menu=bfast, image_filename = "poptart")
+    truffle = Item(name="Ube Cake Truffle", price=9.00, type=entrees, menu=bfast, image_filename = "truffle")
+    ubemisu = Item(name="Ubemisu", price=5.00, type=entrees, menu=bfast, image_filename = "ubemisu")
+
+    items = [bars, canoli, cheescake, cookies, crinkle, flan, monut, poptart, truffle, ubemisu]
 
     # Tables
     tables = []
@@ -34,7 +42,7 @@ with app.app_context():
     # ---------------
     # Seed the Data
     # ---------------
-    data = [employee, dinner, *items, *item_types, *tables]
+    data = [employee, bfast, *items, *item_types, *tables]
     for d in data:
         db.session.add(d)
     db.session.commit()
