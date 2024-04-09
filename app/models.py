@@ -39,6 +39,7 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
     price = db.Column(db.Float, nullable=False)
+    image_filename = db.Column(db.String(30), nullable=False, unique=True)
 
     type_id = db.Column(db.Integer, ForeignKey("item_types.id", ondelete="CASCADE"), nullable=False)
     menu_id = db.Column(db.Integer, ForeignKey("menus.id", ondelete="CASCADE"), nullable=False)
