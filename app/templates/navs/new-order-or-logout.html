@@ -1,0 +1,6 @@
+<nav>
+    <a href="{{ url_for('orders.createOrder')}}">New Order</a>
+    <form method="post" action="{{ url_for('session.logout') }}">
+        <button>Logout</button>
+    </form>
+</nav>
