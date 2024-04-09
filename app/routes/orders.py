@@ -14,8 +14,6 @@ models = { "employee": Employee, "item": Item, "order": Order, "ordered-item": O
 @bp.route("/")
 def index():
     if current_user.is_authenticated: 
-        openTables = getDetailsForOpenTables();
-        print('OPEN TABLES', openTables)
         return render_template("orders.html", orders=getEmployeesOrders())
     return redirect(url_for("session.login"))
 
@@ -81,19 +79,9 @@ def getAll(model):
     return db.session.execute(db.select(models[model])).scalars().all()
 
 def getEmployeesOrders():
-    orders2 = db.session.execute(
-        db.select(Order.id)
-        .join_from(Employee, Order)
-        .where(Employee.id == current_user.id)
-        ).scalars().all()
-    
-    print('ORDERS 2', orders2 )
     return db.session.execute(db.select(Order).filter_by(employee_id = current_user.id)).scalars()
 
-# find tables that have either 
-#   (never been assigned to an order) 
-#   OR (previously assigned to an order AND order is paid)
-def getDetailsForOpenTables():
+def getOpenTables():
     paidTables = db.session.execute(
         db.select(Table.id)
         .join_from(Table, Order)
@@ -105,17 +93,15 @@ def getDetailsForOpenTables():
         .join_from(Table, Order)
     ).scalars().all()
 
-    tablesThatHaveNeverBeenAssigned = db.session.execute(
-        db.select(Table.id)
-        .where(Table.id not in assignedTables)
-    ).scalars().all()
-
-    openTales = [*paidTables, *tablesThatHaveNeverBeenAssigned]
+    tablesThatHaveNeverBeenAssigned = filter(lambda x: x.id not in assignedTables, getAll("table"))
+    return [*paidTables, *tablesThatHaveNeverBeenAssigned]
 
 
 def getFormChoices(form):
     for field in form._fields.keys():
+        field = form[field].name
         if form[field].type == 'SelectField':
-            field = form[field].name
-            options = getAll(field)
+            options = []
+            if (field == 'table'): options = getOpenTables()
+            else: options = getAll(field)
             form[field].choices = [(i.id, f"{i.name if hasattr(i, 'name') else str(i.id) }") for i in options]
