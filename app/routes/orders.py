@@ -13,7 +13,10 @@ models = { "employee": Employee, "item": Item, "order": Order, "ordered-item": O
 @login_required
 @bp.route("/")
 def index():
-    if current_user.is_authenticated: return render_template("orders.html", orders=getEmployeesOrders())
+    if current_user.is_authenticated: 
+        openTables = getDetailsForOpenTables();
+        print('OPEN TABLES', openTables)
+        return render_template("orders.html", orders=getEmployeesOrders())
     return redirect(url_for("session.login"))
 
 
@@ -60,7 +63,7 @@ def handleAddItem(form):
     item = db.session.execute(db.select(Item).where(Item.id == form.item.data)).scalar()
 
     # create new orderedItem
-    orderedItem = OrderedItem(order_id= form.order.data, item = item )
+    orderedItem = OrderedItem(order_id= form.order.data, item = item)
     order.ordered_items.append(orderedItem)
     db.session.commit()
 
@@ -78,7 +81,37 @@ def getAll(model):
     return db.session.execute(db.select(models[model])).scalars().all()
 
 def getEmployeesOrders():
+    orders2 = db.session.execute(
+        db.select(Order.id)
+        .join_from(Employee, Order)
+        .where(Employee.id == current_user.id)
+        ).scalars().all()
+    
+    print('ORDERS 2', orders2 )
     return db.session.execute(db.select(Order).filter_by(employee_id = current_user.id)).scalars()
+
+# find tables that have either 
+#   (never been assigned to an order) 
+#   OR (previously assigned to an order AND order is paid)
+def getDetailsForOpenTables():
+    paidTables = db.session.execute(
+        db.select(Table.id)
+        .join_from(Table, Order)
+        .where(Order.paid == True)
+    ).scalars().all()
+
+    assignedTables = db.session.execute(
+        db.select(Table.id)
+        .join_from(Table, Order)
+    ).scalars().all()
+
+    tablesThatHaveNeverBeenAssigned = db.session.execute(
+        db.select(Table.id)
+        .where(Table.id not in assignedTables)
+    ).scalars().all()
+
+    openTales = [*paidTables, *tablesThatHaveNeverBeenAssigned]
+
 
 def getFormChoices(form):
     for field in form._fields.keys():
