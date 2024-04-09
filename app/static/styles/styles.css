@@ -27,6 +27,7 @@ nav {
     flex-direction: row;
     margin: 15px;
     justify-content: end;
+    align-items: center;
 }
 
 a, button {
