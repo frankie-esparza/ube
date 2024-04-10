@@ -5,9 +5,20 @@
     list-style-type: none
 }
 
+body {
+    margin: 10px;
+}
+
 .header {
     padding: 20px;
 }
+
+.banner {
+    font-size: 14px;
+    margin-inline: 20px;
+    margin-bottom: 20px;
+}
+
 
 .centered-content-container {
     display: flex;
@@ -22,6 +33,8 @@
 .ordered-items-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    width: fit-content;
 }
 
 .ordered-item {
