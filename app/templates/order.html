@@ -2,14 +2,12 @@
     <h3>Order # {{ order.id }}</h3>
     {% if not order.paid %}
     <nav>
-        <a href="/add-to-order/{{order.id}}">Add Item</a>
-        <a href="/remove-from-order/{{order.id}}">Remove Item</a>
-        <form method="post" action="/close-order/{{order.id}}">
-            <button>Close Order</button>
-        </form>
+        {% include "components/buttons/add-item.html" %}
+        {% include "components/buttons/remove-item.html" %}
+        {% include "components/buttons/close-order.html" %}
     </nav>
     {% endif %}
-    <ul>
+    <ul class="closed-order-details">
         <li>Table: {{ order.table_id }}</li>
         <li>Paid: {{'Yes' if order.paid else 'No'}}</li>
         <li>

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-{% include "navs/return-home.html" %}
+{% include "components/buttons/return-home.html" %}
 <div class="centered-content-container">
     <div class="centered-content">
-        <form method="post" action={{ path }}>
+        <form class="form-container" method="post" action={{ path }}>
             {{ form.hidden_tag() }}
             <table>
-                <h2>{{ title }}</h2>
+                <h2 class="form-title">{{ title }}</h2>
                 <tbody>
                     {% for field in form if field.widget.input_type != 'hidden' %}
                     <tr>

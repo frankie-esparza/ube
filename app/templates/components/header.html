@@ -1,10 +1,10 @@
 <header>
     <section class="header-text">
-        <h1><a class="return-home-button" href="{{ url_for('orders.index') }}">ube</a></h1>
-        <h2 class="banner">Have a sweet tooth? Live in the Bay? Order the Filipino ube treats in this app from<a href="https://www.ubeareabakery.com">Ube Area Bakery</a>!</h2>
+        {% include "components/buttons/return-home.html" %}
+        <h2 class="banner">Have a sweet tooth? Live in the Bay? Order the Filipino ube treats in this app from <a class="header-links" target="_blank" href="https://www.ubeareabakery.com">Ube Area Bakery</a>!</h2>
     </section>
-    <section>
-        {% include "navs/orders.html" %}
-    </section>
+    <nav>
+        {% include "components/buttons/logout.html" %}
+    </nav>
 </header>
 
