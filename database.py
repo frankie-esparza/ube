@@ -29,7 +29,7 @@ with app.app_context():
     flan = Item(name="Ube Flan", price=15.00, type=entrees, menu=bfast, image_filename = "flan")
     monut = Item(name="Ube Monut", price=9.00, type=entrees, menu=bfast, image_filename = "monut")
     poptart = Item(name="Ube Pop Tart", price=9.00, type=entrees, menu=bfast, image_filename = "poptart")
-    truffle = Item(name="Ube Cake Truffle", price=9.00, type=entrees, menu=bfast, image_filename = "truffle")
+    truffle = Item(name="Ube Cake Truffle", price=9.00, type=entrees, menu=bfast, image_filename = "truffles")
     ubemisu = Item(name="Ubemisu", price=5.00, type=entrees, menu=bfast, image_filename = "ubemisu")
 
     items = [bars, canoli, cheescake, cookies, crinkle, flan, monut, poptart, truffle, ubemisu]
