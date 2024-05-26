@@ -3,7 +3,7 @@
 {% include "components/buttons/return-home.html" %}
 <div class="centered-content-container">
     <div class="centered-content">
-        <form class="form-container" method="post" action={{ path }}>
+        <form class="form-container" method="post" action={{ path }} autocomplete="off">
             {{ form.hidden_tag() }}
             <table>
                 <h2 class="form-title">{{ title }}</h2>
