@@ -2,9 +2,9 @@
 {% block content %}
 <div class="centered-content-container">
     <div class="centered-content">
-        <h1>Welcome {{ current_user.name }}! </h1>
+        <h2 class="welcome-message">Welcome {{ current_user.name }}! </h2>
+        {% include "components/buttons/create-order.html" %}
         <div>
-            <h2>My Orders:</h2>
             <ul>
                 {% for order in orders %}
                 <li>{% include "order.html"%}</li>
