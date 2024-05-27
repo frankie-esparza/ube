@@ -1,12 +1,12 @@
 <div class ='order'>
-    <h3>Order # {{ order.id }}</h3>
-    {% if not order.paid %}
     <nav>
-        {% include "components/buttons/add-item.html" %}
-        {% include "components/buttons/remove-item.html" %}
-        {% include "components/buttons/close-order.html" %}
+        <h3>Order # {{ order.id }}</h3>
+        {% if not order.paid %}
+            {% include "components/buttons/add-item.html" %}
+            {% include "components/buttons/remove-item.html" %}
+            {% include "components/buttons/close-order.html" %}
+        {% endif %}
     </nav>
-    {% endif %}
     <ul class="closed-order-details">
         <li>Table: {{ order.table_id }}</li>
         <li>Paid: {{'Yes' if order.paid else 'No'}}</li>

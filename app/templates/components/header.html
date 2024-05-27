@@ -3,8 +3,10 @@
         {% include "components/buttons/return-home.html" %}
         <h2 class="banner">Have a sweet tooth? Live in the Bay? Order the Filipino ube treats in this app from <a class="header-links" target="_blank" href="https://www.ubeareabakery.com">Ube Area Bakery</a>!</h2>
     </section>
+    {% if current_user.is_authenticated %}
     <nav>
         {% include "components/buttons/logout.html" %}
     </nav>
+    {% endif %}
 </header>
 

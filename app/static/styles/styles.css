@@ -26,6 +26,7 @@
 
 html {
     width: 100vw;
+    overflow-x: hidden;
     background-color: var(--ube-lighter-grey);
 }
 
@@ -118,7 +119,7 @@ nav {
 }
 
 .closed-order-details {
-    margin: 20px;
+    margin: 0px;
 }
 
 .create-order-button, 
@@ -147,6 +148,8 @@ nav {
     flex-direction: row;
     flex-wrap: wrap;
     width: fit-content;
+    padding: 0px;
+    margin-inline: 40px;
 }
 
 .ordered-item {
@@ -159,8 +162,8 @@ nav {
 .order, 
 .form-container {
     background-color: var(--ube-white);
-    margin: 20px;
-    padding: 20px;
+    margin-bottom: 40px;
+    padding: 10px;
     border-radius: 10px;
 }
 
