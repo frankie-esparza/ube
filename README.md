@@ -1,7 +1,7 @@
 # Ube
 A full stack point of sale app for managing orders at a Filipino café
 
-<img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/ube.gif" width="500">
+<img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/ube.gif" width="800">
 
 ## Features 
 - Sigin and create new employee acounts
