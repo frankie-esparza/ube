@@ -1,5 +1,5 @@
 # Ube
-A full-stack point of sale app for orders management at a Filipino café
+A full-stack point of sale app for managing orders at a Filipino café
 
 <img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/ube.gif" width="500">
 
