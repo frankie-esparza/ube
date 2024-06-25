@@ -4,13 +4,14 @@ A full stack point of sale app for managing orders at a Filipino café
 🎬 Watch the demo video at [frankie.engineer/more](https://frankie.engineer/more)
 <br></br>
 
-<img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/ube.gif" width="800">
-
 ## Features 
 - ☀️ Login at the start of your shift
 - 🍮 Add items to orders
 - 🍽️ Seat customers at tables
 - 💸 Mark orders as paid
+<br></br>
+
+<img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/ube.gif" width="800">
 
 ## Setup
 1) Download PostgreSQL (for macs, download the PostgreSQL app - [HERE](https://postgresapp.com/))
